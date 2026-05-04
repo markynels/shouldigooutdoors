@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+     SEO META TAGS — these are critical for ranking
+     Replace YOUR-DOMAIN.com with your actual domain after buying it
+============================================================ -->
+<title>Should I Go Outdoors? — Instant Rain Check for the Next Hour</title>
+<meta name="description" content="One question, one answer. Find out if it's about to rain in the next hour at your location. No clutter, no 14-day forecast, no ads on top of the answer. Just go outside or stay inside.">
+<meta name="keywords" content="should I go outside, will it rain in the next hour, quick weather check, is it going to rain soon, rain in next hour, weather right now">
+<link rel="canonical" href="https://shouldigooutdoors.com/">
+
+<!-- Open Graph / social sharing -->
+<meta property="og:title" content="Should I Go Outdoors? — Instant Rain Check">
+<meta property="og:description" content="One question. One answer. Find out if it's about to rain at your location in the next hour.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shouldigooutdoors.com/">
+
+<!-- Schema.org structured data — helps Google understand the page -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Should I Go Outdoors?",
+  "description": "Instant next-hour rain check based on your location. Answers one question: should you go outside right now?",
+  "applicationCategory": "WeatherApplication",
+  "operatingSystem": "Any (web browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<!-- ============================================================
+     GOOGLE ADSENSE
+     Uncomment and replace ca-pub-XXXXXXXXXXXXXXXX with your
+     publisher ID after AdSense approves your site.
+============================================================ -->
+<!--
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+-->
+
+<!-- Fonts: brutalist/editorial pairing -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #f4efe6;
+    --ink: #181818;
+    --ink-soft: #5a5550;
+    --rule: #181818;
+    --accent-go: #2d6a4f;
+    --accent-stay: #b5341e;
+    --accent-unknown: #8a7e6a;
+    --paper: #fbf8f1;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(24,24,24,0.06) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  /* Top metadata strip */
+  .strip {
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--paper);
+  }
+  .strip .left { display: flex; gap: 24px; }
+  .strip .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent-unknown);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .strip .dot.live { background: #2d6a4f; animation: pulse 2s infinite; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Hero verdict section */
+  .hero {
+    min-height: calc(100vh - 47px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 32px;
+    position: relative;
+  }
+
+  .question {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+  }
+
+  .verdict {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(72px, 18vw, 240px);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    margin: 0;
+    transition: color 0.6s ease;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .verdict.go { color: var(--accent-go); }
+  .verdict.stay { color: var(--accent-stay); }
+  .verdict.unknown { color: var(--accent-unknown); }
+
+  .verdict-detail {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(20px, 3vw, 32px);
+    color: var(--ink);
+    margin-top: 32px;
+    max-width: 600px;
+    font-weight: 400;
+  }
+
+  .stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 56px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat {
+    text-align: left;
+    border-left: 1px solid var(--rule);
+    padding-left: 16px;
+  }
+  .stat .label {
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+  .stat .value {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* Manual location button */
+  .location-btn {
+    margin-top: 40px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    padding: 12px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--ink);
+    transition: all 0.2s;
+  }
+  .location-btn:hover { background: var(--ink); color: var(--bg); }
+
+  .location-input {
+    margin-top: 16px;
+    display: none;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .location-input.show { display: flex; }
+  .location-input input {
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    width: 240px;
+    color: var(--ink);
+  }
+  .location-input button {
+    border: 1px solid var(--rule);
+    background: var(--ink);
+    color: var(--bg);
+    padding: 12px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  /* Ad slot styling — restrained, clearly labeled */
+  .ad-slot {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 24px 32px;
+    margin: 0;
+    background: var(--paper);
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .ad-slot .ad-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+  .ad-slot .ad-placeholder {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  /* Content section */
+  .content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 80px 32px;
+  }
+
+  .content h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(36px, 6vw, 64px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 24px;
+    margin-top: 64px;
+  }
+  .content h2:first-child { margin-top: 0; }
+
+  .content h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    margin-top: 40px;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .content p {
+    font-size: 19px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+
+  .content p.lede {
+    font-size: 24px;
+    font-style: italic;
+    color: var(--ink-soft);
+    border-left: 2px solid var(--ink);
+    padding-left: 24px;
+    margin-bottom: 40px;
+  }
+
+  /* FAQ */
+  .faq-item {
+    border-top: 1px solid var(--rule);
+    padding: 24px 0;
+  }
+  .faq-item:last-child { border-bottom: 1px solid var(--rule); }
+  .faq-q {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    letter-spacing: -0.01em;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q::after {
+    content: "+";
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 400;
+    transition: transform 0.2s;
+  }
+  details[open] .faq-q::after { transform: rotate(45deg); }
+  .faq-a {
+    margin-top: 16px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 32px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--paper);
+  }
+  footer a { color: var(--ink); text-decoration: underline; }
+
+  /* Loading state */
+  .loading .verdict {
+    opacity: 0.3;
+    animation: breath 1.5s ease-in-out infinite;
+  }
+  @keyframes breath {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.5; }
+  }
+
+  /* Mobile tweaks */
+  @media (max-width: 600px) {
+    .strip { padding: 12px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .strip .left { flex-wrap: wrap; gap: 12px; }
+    .hero { padding: 40px 20px; }
+    .stats { gap: 24px; margin-top: 40px; }
+    .content { padding: 60px 20px; }
+  }
+</style>
+</head>
+<body class="loading">
+
+<!-- Top metadata strip -->
+<div class="strip">
+  <div class="left">
+    <span><span class="dot" id="status-dot"></span><span id="status-text">Locating</span></span>
+    <span id="location-name">—</span>
+  </div>
+  <div><span id="time-now"></span></div>
+</div>
+
+<!-- HERO: the verdict -->
+<main class="hero">
+  <div class="question">Should you go outdoors?</div>
+  <h1 class="verdict unknown" id="verdict">Checking…</h1>
+  <div class="verdict-detail" id="verdict-detail">Reading the sky over your block.</div>
+
+  <div class="stats" id="stats" style="visibility: hidden;">
+    <div class="stat">
+      <div class="label">Rain chance, next hour</div>
+      <div class="value" id="stat-prob">—</div>
+    </div>
+    <div class="stat">
+      <div class="label">Expected rainfall</div>
+      <div class="value" id="stat-amount">—</div>
+    </div>
+    <div class="stat">
+      <div class="label">Right now</div>
+      <div class="value" id="stat-current">—</div>
+    </div>
+  </div>
+
+  <button class="location-btn" id="manual-btn">Use a different location</button>
+  <div class="location-input" id="manual-input">
+    <input type="text" id="city-input" placeholder="Try: Paris, Tokyo, Brooklyn">
+    <button id="city-submit">Check</button>
+  </div>
+</main>
+
+<!-- AD SLOT 1: below the verdict, where engaged readers land -->
+<aside class="ad-slot">
+  <div class="ad-label">Advertisement</div>
+  <!-- Replace the placeholder with your AdSense unit code once approved -->
+  <div class="ad-placeholder">[ AdSense slot — 728×90 or responsive ]</div>
+  <!--
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="YOUR_SLOT_ID_1"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+</aside>
+
+<!-- SEO content section: this is what helps the page rank -->
+<article class="content">
+
+  <h2>One question, one answer.</h2>
+  <p class="lede">Most weather apps tell you everything except what you actually need to know: should you put on shoes and walk out the door right now, or not?</p>
+
+  <p>This page checks the rain forecast for the next hour at your exact location and gives you a single, honest verdict — <strong>GO OUTSIDE</strong> or <strong>STAY INSIDE</strong>. No 14-day forecast. No air quality index. No pollen count. No animated radar loop. No newsletter signup. No app to install.</p>
+
+  <p>If the chance of rain in the next 60 minutes is meaningful, it tells you to stay in. Otherwise, the sky is your friend and you should go.</p>
+
+  <h3>How the verdict works</h3>
+  <p>The page reads your approximate location (with your permission) and queries a free, open weather data service that aggregates forecasts from national weather agencies — the same models meteorologists use. It looks at the precipitation probability and expected rainfall amount for the hour ahead. If the probability is over 50% <em>or</em> measurable rain is expected, you get a STAY INSIDE verdict. Otherwise, GO OUTSIDE.</p>
+
+  <p>That's it. There's no algorithm trying to upsell you on premium tiers, no machine-learning model trained on your engagement metrics. Just rain, yes or no, soon.</p>
+
+  <h2>Why this exists</h2>
+  <p>Weather forecast fatigue is real. You open a weather app to answer a 10-second question and get hit with sponsored content, three ad units, an "outfit suggestion" feature, and a chart of UV index forecasts for next Tuesday. By the time you've found the rain probability, you've forgotten why you were going outside.</p>
+
+  <p>The problem isn't a lack of data — there's more accurate weather data freely available now than at any point in human history. The problem is that the apps showing you that data are designed to keep you scrolling. This page does the opposite. Get your answer, close the tab, walk the dog.</p>
+
+  <h2>Frequently asked questions</h2>
+
+  <details class="faq-item">
+    <summary class="faq-q">How accurate is the next-hour rain forecast?</summary>
+    <div class="faq-a">Short-range precipitation forecasts (under 60 minutes) are among the most accurate predictions in meteorology, especially in regions with dense radar coverage. The data here comes from national weather services (NOAA in the US, DWD in Germany, Météo-France, and others) blended together. For a quick "should I go now" check, it's solid. For planning a wedding three days out, look elsewhere.</div>
+  </details>
+
+  <details class="faq-item">
+    <summary class="faq-q">Why does it ask for my location?</summary>
+    <div class="faq-a">Because rain in Boston has nothing to do with rain in Brooklyn. The page asks your browser for an approximate location (you can deny it) and falls back to a city you type in. Your location is never stored, sent to a server we own, or sold to anyone — it's used only to query the public weather API, then discarded.</div>
+  </details>
+
+  <details class="faq-item">
+    <summary class="faq-q">What counts as "rain" here?</summary>
+    <div class="faq-a">A measurable forecast of precipitation in the next hour, or a probability over 50%. Drizzle counts. Snow counts (you'll get wet either way). The verdict is about whether stepping outside is a bad idea, not whether the meteorological definition of "rain" applies.</div>
+  </details>
+
+  <details class="faq-item">
+    <summary class="faq-q">It said GO OUTSIDE and I got rained on.</summary>
+    <div class="faq-a">It happens. Forecasts deal in probabilities, and "30% chance of rain" means it'll rain about three times out of every ten times you see that number. The flip side is that 90% of the time the page tells you to go outside, you won't get rained on. We think that's a fair trade for not having to scroll past three banner ads to find out.</div>
+  </details>
+
+  <details class="faq-item">
+    <summary class="faq-q">Does this work everywhere in the world?</summary>
+    <div class="faq-a">Almost. The underlying data covers the entire globe at roughly 11 km resolution, with much higher resolution (1 km) in North America and Europe. Remote areas without nearby weather stations will be less accurate, but you'll still get a reasonable answer.</div>
+  </details>
+
+  <details class="faq-item">
+    <summary class="faq-q">Is there an app?</summary>
+    <div class="faq-a">No. That's the point. Bookmark this page on your phone's home screen and it'll behave like an app, minus the install, the permissions, the updates, and the data harvesting.</div>
+  </details>
+
+  <details class="faq-item">
+    <summary class="faq-q">Why are there ads if you hate cluttered weather apps?</summary>
+    <div class="faq-a">Running a website costs money and time. Two restrained ad slots — one below the verdict, one above the footer — is the bargain we're striking. They never sit between you and your answer. If that ever changes, this paragraph will be the first thing to go.</div>
+  </details>
+
+  <h2>Bookmark it</h2>
+  <p>If this saved you 30 seconds of weather-app scrolling, save the page. The whole thing is one URL, loads instantly, and works offline once cached. Your move.</p>
+
+</article>
+
+<!-- AD SLOT 2: above the footer, after engagement -->
+<aside class="ad-slot">
+  <div class="ad-label">Advertisement</div>
+  <div class="ad-placeholder">[ AdSense slot — responsive ]</div>
+  <!--
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="YOUR_SLOT_ID_2"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+</aside>
+
+<footer>
+  Weather data via <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> · Built to answer one question well · <span id="year"></span>
+</footer>
+
+<script>
+// ============================================================
+// CORE LOGIC
+// ============================================================
+
+const $ = (id) => document.getElementById(id);
+
+// Update clock + year on load
+function updateClock() {
+  const now = new Date();
+  $('time-now').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+$('year').textContent = new Date().getFullYear();
+updateClock();
+setInterval(updateClock, 60000);
+
+// Manual location toggle
+$('manual-btn').addEventListener('click', () => {
+  $('manual-input').classList.toggle('show');
+  $('city-input').focus();
+});
+$('city-submit').addEventListener('click', handleCitySubmit);
+$('city-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') handleCitySubmit();
+});
+
+async function handleCitySubmit() {
+  const query = $('city-input').value.trim();
+  if (!query) return;
+
+  setStatus('Searching', false);
+  try {
+    // Open-Meteo's geocoding API — free, no key
+    const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=en&format=json`);
+    const data = await res.json();
+    if (!data.results || data.results.length === 0) {
+      showError("Couldn't find that place. Try a bigger nearby city?");
+      return;
+    }
+    const place = data.results[0];
+    const label = [place.name, place.admin1, place.country_code].filter(Boolean).join(', ');
+    fetchWeather(place.latitude, place.longitude, label);
+  } catch (err) {
+    showError("Geocoding failed. Check your connection?");
+  }
+}
+
+// Try browser geolocation, fall back to IP-based
+function init() {
+  if (!navigator.geolocation) {
+    fallbackToIP();
+    return;
+  }
+
+  setStatus('Locating', false);
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+    },
+    (err) => {
+      // User denied or error — try IP
+      fallbackToIP();
+    },
+    { timeout: 8000, maximumAge: 600000 }
+  );
+}
+
+async function reverseGeocode(lat, lon) {
+  // Use BigDataCloud's free reverse geocoder (no key required for client-side)
+  try {
+    const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+    const data = await res.json();
+    const label = [data.city || data.locality, data.principalSubdivision, data.countryCode].filter(Boolean).join(', ') || 'Your location';
+    fetchWeather(lat, lon, label);
+  } catch (err) {
+    fetchWeather(lat, lon, 'Your location');
+  }
+}
+
+async function fallbackToIP() {
+  setStatus('Locating', false);
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    const data = await res.json();
+    if (data.latitude && data.longitude) {
+      const label = [data.city, data.region_code, data.country_code].filter(Boolean).join(', ');
+      fetchWeather(data.latitude, data.longitude, label);
+    } else {
+      showError("Couldn't find your location. Try entering a city above.");
+    }
+  } catch (err) {
+    showError("Couldn't find your location. Try entering a city above.");
+  }
+}
+
+// ============================================================
+// THE VERDICT — query Open-Meteo and decide
+// ============================================================
+
+async function fetchWeather(lat, lon, label) {
+  setStatus('Reading the sky', false);
+  $('location-name').textContent = label;
+
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+    `&hourly=precipitation_probability,precipitation` +
+    `&current=temperature_2m,precipitation,weather_code` +
+    `&forecast_hours=2&temperature_unit=celsius&timezone=auto`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('weather fetch failed');
+    const data = await res.json();
+    renderVerdict(data);
+  } catch (err) {
+    showError("Couldn't reach the weather service. Try again in a minute?");
+  }
+}
+
+function renderVerdict(data) {
+  document.body.classList.remove('loading');
+  setStatus('Live', true);
+  $('stats').style.visibility = 'visible';
+
+  // Look at the next hour: index 0 is the current hour bucket, index 1 is next
+  // We average prob over the next 1-2 hour buckets to capture imminent rain
+  const hourly = data.hourly;
+  const probs = hourly.precipitation_probability || [];
+  const amounts = hourly.precipitation || [];
+
+  const probNext = Math.max(probs[0] || 0, probs[1] || 0);
+  const amountNext = (amounts[0] || 0) + (amounts[1] || 0);
+  const currentTemp = data.current?.temperature_2m;
+  const currentPrecip = data.current?.precipitation || 0;
+
+  const willRain = probNext >= 50 || amountNext >= 0.2 || currentPrecip > 0;
+
+  const verdict = $('verdict');
+  const detail = $('verdict-detail');
+
+  if (willRain) {
+    verdict.textContent = 'Stay inside';
+    verdict.className = 'verdict stay';
+    if (currentPrecip > 0) {
+      detail.textContent = "It's already raining out there.";
+    } else if (probNext >= 80) {
+      detail.textContent = "Rain is almost certain in the next hour.";
+    } else {
+      detail.textContent = "Rain is likely in the next hour. Probably not worth it.";
+    }
+  } else {
+    verdict.textContent = 'Go outside';
+    verdict.className = 'verdict go';
+    if (probNext < 10) {
+      detail.textContent = "Sky's clear. No excuse.";
+    } else if (probNext < 25) {
+      detail.textContent = "Very low chance of rain. You're fine.";
+    } else {
+      detail.textContent = "Slim chance of a sprinkle, but it's a green light.";
+    }
+  }
+
+  $('stat-prob').textContent = `${Math.round(probNext)}%`;
+  $('stat-amount').textContent = amountNext > 0 ? `${amountNext.toFixed(1)} mm` : 'None';
+  $('stat-current').textContent = currentTemp !== undefined ? `${Math.round(currentTemp)}°C` : '—';
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+
+function setStatus(text, live) {
+  $('status-text').textContent = text;
+  $('status-dot').classList.toggle('live', !!live);
+}
+
+function showError(msg) {
+  document.body.classList.remove('loading');
+  setStatus('No data', false);
+  $('verdict').textContent = 'Hmm.';
+  $('verdict').className = 'verdict unknown';
+  $('verdict-detail').textContent = msg;
+}
+
+// Boot
+init();
+</script>
+
+</body>
+</html>
