@@ -749,8 +749,9 @@ function showError(msg) {
 //     init() immediately — no friction, no button click needed.
 //   - Otherwise we wait for a click, which avoids the unsolicited prompt.
 //
-// The Permissions API isn't supported in some older Safari versions; in that case
-// we fall back to gesture-gated.
+// The Permissions API isn't supported on iOS WebKit (Chrome, Safari, Firefox on
+// iOS all use WebKit under the hood) for the 'geolocation' name, so we also keep
+// our own returning-visitor flag in localStorage as a portable fallback.
 async function boot() {
   setStatus('Ready', false);
 
@@ -758,7 +759,22 @@ async function boot() {
   // (no once:true) so users can retry after fixing a permission block.
   $('locate-btn').addEventListener('click', startLookup);
 
-  // Check whether permission was already granted in a previous visit.
+  // Returning-visitor signal that works everywhere, including iOS WebKit where
+  // the Permissions API doesn't cover geolocation. If they've successfully used
+  // the site before, skip the CTA and go straight to the lookup. The browser
+  // may still show its own native prompt — that's the OS's call, not ours.
+  try {
+    if (localStorage.getItem('sigo_returning') === '1') {
+      startLookup();
+      return;
+    }
+  } catch (e) {
+    // localStorage blocked (private mode, etc.) — fall through to the
+    // Permissions API path below.
+  }
+
+  // First-time visitor on a browser that supports the Permissions API:
+  // if permission was already granted in a previous visit, skip the CTA.
   if (navigator.permissions && navigator.permissions.query) {
     try {
       const status = await navigator.permissions.query({ name: 'geolocation' });
@@ -777,6 +793,10 @@ let lookupStarted = false;
 function startLookup() {
   if (lookupStarted) return;
   lookupStarted = true;
+  // Remember this user has used the site successfully so future visits skip
+  // the CTA — important on iOS where the Permissions API can't tell us this.
+  // Wrapped in try/catch because Safari throws on localStorage in private mode.
+  try { localStorage.setItem('sigo_returning', '1'); } catch (e) {}
   $('locate-btn').classList.add('hidden');
   document.body.classList.add('loading');
   $('verdict').textContent = 'Checking…';
