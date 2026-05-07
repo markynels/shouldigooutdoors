@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Terms — Should I Go Outdoors?</title>
+<meta name="description" content="The terms for using shouldigooutdoors.com. One page, plain English, no surprises.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://shouldigooutdoors.com/terms">
+<link rel="icon" type="image/png" href="favicon.png">
+
+<meta property="og:title" content="Terms — Should I Go Outdoors?">
+<meta property="og:description" content="The terms for using shouldigooutdoors.com. Plain English, no surprises.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shouldigooutdoors.com/terms">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #f4efe6;
+    --ink: #181818;
+    --ink-soft: #5a5550;
+    --rule: #181818;
+    --accent-go: #2d6a4f;
+    --accent-stay: #b5341e;
+    --accent-unknown: #8a7e6a;
+    --paper: #fbf8f1;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(24,24,24,0.06) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  /* Top metadata strip — same as privacy/index */
+  .strip {
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--paper);
+  }
+  .strip .left { display: flex; gap: 24px; }
+  .strip .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent-go);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .strip a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .strip a:hover { border-bottom-color: var(--ink); }
+
+  /* Page header */
+  .page-head {
+    padding: 80px 32px 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+
+  .page-head h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(56px, 12vw, 140px);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    margin: 0;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .page-head .lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(18px, 2.6vw, 26px);
+    color: var(--ink);
+    margin: 28px auto 0;
+    max-width: 600px;
+    font-weight: 400;
+  }
+
+  .page-head .updated {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 32px;
+  }
+
+  /* TL;DR card — same component as privacy */
+  .tldr {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 32px 0;
+  }
+
+  .tldr-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 32px 36px;
+    position: relative;
+  }
+
+  .tldr-card::before {
+    content: "TL;DR";
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .tldr-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tldr-card li {
+    font-size: 17px;
+    line-height: 1.55;
+    padding: 12px 0 12px 28px;
+    border-bottom: 1px dashed rgba(24,24,24,0.15);
+    position: relative;
+  }
+  .tldr-card li:last-child { border-bottom: none; }
+  .tldr-card li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-go);
+    font-weight: 500;
+  }
+
+  /* Body content */
+  .content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 64px 32px;
+  }
+
+  .content h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(32px, 5vw, 52px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 20px;
+    margin-top: 64px;
+  }
+  .content h2:first-of-type { margin-top: 0; }
+
+  .content h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin-top: 36px;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .content p {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    color: var(--ink);
+  }
+
+  .content ul {
+    margin: 0 0 20px;
+    padding-left: 22px;
+  }
+
+  .content ul li {
+    font-size: 18px;
+    line-height: 1.65;
+    margin-bottom: 10px;
+  }
+
+  .content a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+    transition: background 0.15s, color 0.15s;
+    padding: 0 1px;
+  }
+  .content a:hover {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  /* Disclaimer block — bold callout, mirrors the .deny block on privacy */
+  .disclaimer {
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 24px 28px;
+    margin: 28px 0;
+    position: relative;
+  }
+
+  .disclaimer::before {
+    content: "AS-IS";
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent-stay);
+    font-weight: 500;
+  }
+
+  .disclaimer p {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.65;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .disclaimer p:last-child { margin-bottom: 0; }
+  .disclaimer strong {
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+
+  /* Inline mono styling for emails */
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92em;
+  }
+
+  /* Footer — same as privacy/index */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 32px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--paper);
+  }
+  footer a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .strip { padding: 12px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .strip .left { flex-wrap: wrap; gap: 12px; }
+    .page-head { padding: 56px 20px 32px; }
+    .tldr { padding: 40px 20px 0; }
+    .tldr-card { padding: 28px 22px; }
+    .content { padding: 48px 20px; }
+    .content p, .content ul li { font-size: 17px; }
+    .disclaimer { padding: 22px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top metadata strip -->
+<div class="strip">
+  <div class="left">
+    <span><span class="dot"></span><a href="/">← Should I go outdoors?</a></span>
+    <span>Terms</span>
+  </div>
+  <div>nine185</div>
+</div>
+
+<!-- Page header -->
+<header class="page-head">
+  <div class="eyebrow">The fine print, sized to actually read</div>
+  <h1>Terms</h1>
+  <p class="lede">The deal for using shouldigooutdoors.com. Short, honest, and written so a human can read it on a phone.</p>
+  <div class="updated">Last updated · 6 May 2026</div>
+</header>
+
+<!-- TL;DR card -->
+<section class="tldr">
+  <div class="tldr-card">
+    <ul>
+      <li>Use the site freely. It's a weather verdict tool, not a contract for your life.</li>
+      <li>Forecasts are best-effort and sometimes wrong. Don't bet anything important on them.</li>
+      <li>Don't try to hammer, scrape, or break the site. Don't use it to do anything illegal.</li>
+      <li>We don't owe you damages if a forecast misses. Bring a jacket if you're not sure.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Body -->
+<article class="content">
+
+  <h2>Who these terms are with</h2>
+  <p>These terms ("Terms") are an agreement between you and Nine185 ("we", "us", "our"), the operator of shouldigooutdoors.com (the "site"). By using the site, you accept these Terms. If you don't accept them, please don't use the site.</p>
+
+  <h2>What the site does</h2>
+  <p>The site asks one question — should you go outdoors? — and answers it based on the rain forecast for the next hour at your approximate location. It is a free, lightweight utility. There are no accounts, subscriptions, or paid tiers.</p>
+  <p>How your location is handled, and which third-party services are involved in producing the verdict, is described in our <a href="/privacy">Privacy Policy</a>.</p>
+
+  <h2>Forecast accuracy — read this one</h2>
+
+  <div class="disclaimer">
+    <p><strong>Plain English:</strong> The site tells you what a weather model thinks will happen. Weather models are right most of the time, and wrong some of the time. Use the verdict as a hint, not a guarantee.</p>
+    <p><strong>The legal version:</strong> The site, including all forecasts, verdicts, and other content, is provided <strong>as-is</strong> and <strong>as-available</strong>, without warranties of any kind, express or implied — including warranties of accuracy, reliability, fitness for a particular purpose, or non-infringement. We do not promise that the site will be available, error-free, or that any forecast will be correct.</p>
+    <p>Don't rely on the site for decisions where being wrong has serious consequences — flying a drone, scheduling outdoor surgery, planning a wedding, evacuating ahead of a storm, deciding whether to leave a child or pet outside. For those, use a proper meteorological service.</p>
+  </div>
+
+  <h2>Acceptable use</h2>
+  <p>You can use the site for any normal personal use: checking whether to bring an umbrella, deciding to walk the dog, settling an argument with your roommate. We're glad you're here.</p>
+  <p>Please don't:</p>
+  <ul>
+    <li>Hammer the site with automated requests, scrapers, or load-testing tools without permission.</li>
+    <li>Attempt to bypass security measures, rate limits, bot protection, or consent banners.</li>
+    <li>Reverse-engineer, inject code, or otherwise interfere with how the site works for other users.</li>
+    <li>Use the site or its underlying APIs in a way that violates Open-Meteo's, BigDataCloud's, ipapi.co's, or any other upstream provider's terms.</li>
+    <li>Use the site for anything illegal, fraudulent, or designed to harm someone.</li>
+  </ul>
+  <p>If you're building something that needs weather data at scale, please go directly to <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer nofollow">Open-Meteo</a> rather than scraping us. They're great and have a proper API.</p>
+
+  <h2>Third-party services</h2>
+  <p>Producing a verdict requires sending your approximate location to third-party services (Open-Meteo, BigDataCloud, ipapi.co), and the site is hosted via Cloudflare and serves ads via Google AdSense. Their terms and privacy policies govern your interactions with them, and we don't control their behaviour. The full list, with links, is in our <a href="/privacy">Privacy Policy</a>.</p>
+
+  <h2>Advertising</h2>
+  <p>The site shows ads served by Google AdSense to cover hosting costs. Ads are placed in two restrained slots and never sit between you and the verdict. If consent is required where you live, you'll see a banner before any ad cookies are set, and you can decline. You can opt out of personalised advertising at any time via <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer nofollow">Google Ads Settings</a>.</p>
+  <p>We don't endorse advertised products. Clicking an ad takes you to a third party we don't control.</p>
+
+  <h2>Intellectual property</h2>
+  <p>The site's design, copy, and code are © Nine185, except for third-party components used under their respective licenses (fonts via Google Fonts, weather data via Open-Meteo under its terms, and so on). You're welcome to link to the site, share screenshots, and quote it briefly with credit. Please don't clone the site wholesale or pass it off as your own.</p>
+  <p>Weather data displayed on the site originates with Open-Meteo and the national weather services it aggregates. Their attributions and terms apply to that data.</p>
+
+  <h2>Limitation of liability</h2>
+  <p>To the fullest extent permitted by law, Nine185 will not be liable for any indirect, incidental, consequential, special, or punitive damages — including lost profits, lost data, or damages for personal injury or property — arising out of or related to your use of the site, even if we've been advised of the possibility of such damages.</p>
+  <p>For any claim where liability cannot be excluded by law, our total liability to you is limited to the amount you paid to use the site in the twelve months before the claim. Since the site is free, that amount is normally zero.</p>
+  <p>Some jurisdictions don't allow certain limitations on liability, so parts of this section may not apply to you. Your statutory consumer rights (where you have them) are not affected.</p>
+
+  <h2>Indemnity</h2>
+  <p>If your use of the site causes us to face a claim from someone else — for example, because you misused the site or violated these Terms — you agree to cover the reasonable costs of defending against that claim, to the extent the law allows.</p>
+
+  <h2>Changes to the site or these terms</h2>
+  <p>We may change, pause, or discontinue parts of the site at any time. If we change these Terms in a material way, we'll update the "Last updated" date at the top and, where appropriate, note the change on the home page FAQ. Continued use of the site after a change means you accept the updated Terms.</p>
+
+  <h2>Termination</h2>
+  <p>You can stop using the site at any time. We may also restrict or block access to anyone who abuses the site, breaks these Terms, or causes harm to other users or the underlying services.</p>
+
+  <h2>Governing law and disputes</h2>
+  <p>These Terms are governed by the laws of the Province of Quebec, Canada, without regard to conflict-of-laws rules. Any dispute arising out of or relating to the site or these Terms will be brought in the courts located in Montreal, Quebec, unless local consumer-protection law gives you the right to bring it elsewhere — in which case that right is preserved.</p>
+
+  <h2>Severability</h2>
+  <p>If any part of these Terms is found unenforceable, the rest stays in effect. An unenforceable clause will be interpreted, to the extent possible, to reflect its original intent.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about these Terms: <a href="mailto:info@nine185.com" class="mono">info@nine185.com</a>.</p>
+
+</article>
+
+<footer>
+  Operated by Nine185 · <a href="/">Home</a> · <a href="/privacy">Privacy</a> · <a href="mailto:info@nine185.com">Contact</a>
+</footer>
+
+</body>
+</html>
