@@ -445,7 +445,7 @@
 
   <details class="faq-item">
     <summary class="faq-q">Why does it ask for my location?</summary>
-    <div class="faq-a">Because rain in Boston has nothing to do with rain in Brooklyn. The page asks your browser for an approximate location (you can deny it) and falls back to a city you type in. Your location is never stored, sent to a server we own, or sold to anyone — it's used only to query the public weather API, then discarded.</div>
+    <div class="faq-a">Because rain in Boston has nothing to do with rain in Brooklyn. The page asks your browser for an approximate location (you can deny it) and falls back to either an IP-based estimate or a city you type in. Your coordinates are rounded to roughly neighbourhood-level before being sent anywhere. To produce the verdict, your location goes to Open-Meteo (weather forecast), BigDataCloud (reverse geocoding to display a city name) and, only if your browser blocks geolocation, to ipapi.co (IP-based city estimate). We don't run our own servers or databases, so there's nothing we store, log, or sell on our side. Full details — including hosting via Cloudflare and ads via Google AdSense are in our <a href="/privacy">Privacy Policy</a>.</div>
   </details>
 
   <details class="faq-item">
@@ -468,9 +468,9 @@
     <div class="faq-a">No. That's the point. Bookmark this page on your phone's home screen and it'll behave like an app, minus the install, the permissions, the updates, and the data harvesting.</div>
   </details>
 
-  <details class="faq-item">
+<details class="faq-item">
     <summary class="faq-q">Why are there ads if you hate cluttered weather apps?</summary>
-    <div class="faq-a">Running a website costs money and time. Two restrained ad slots — one below the verdict, one above the footer — is the bargain we're striking. They never sit between you and your answer. If that ever changes, this paragraph will be the first thing to go.</div>
+    <div class="faq-a">Running a website costs money and time. Two restrained ad slots — one below the verdict, one above the footer — is the bargain we're striking. They never sit between you and your answer. The ads are served by Google AdSense and may set cookies for delivery and measurement; where consent is required, you'll see a banner and can decline. Details are in our <a href="/privacy">Privacy Policy</a>. If we ever change the ad layout to be more intrusive, this paragraph will be the first thing to go.</div>
   </details>
 
   <h2>Bookmark it</h2>
@@ -494,7 +494,7 @@
 </aside>
 
 <footer>
-  Weather data via <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> · Built to answer one question well · <span id="year"></span>
+  Weather data via <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> · Built to answer one question well · <a href="/privacy" rel="nofollow">Privacy</a> · <a href="/terms" rel="nofollow">Terms</a> · <span id="year"></span>
 </footer>
 
 <script>

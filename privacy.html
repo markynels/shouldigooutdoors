@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Privacy — Should I Go Outdoors?</title>
+<meta name="description" content="What data shouldigooutdoors.com touches, who it goes to, and what we don't do with it. One page, plain English.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://shouldigooutdoors.com/privacy">
+<link rel="icon" type="image/png" href="favicon.png">
+
+<meta property="og:title" content="Privacy — Should I Go Outdoors?">
+<meta property="og:description" content="What data we touch, who it goes to, and what we don't do with it.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shouldigooutdoors.com/privacy">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #f4efe6;
+    --ink: #181818;
+    --ink-soft: #5a5550;
+    --rule: #181818;
+    --accent-go: #2d6a4f;
+    --accent-stay: #b5341e;
+    --accent-unknown: #8a7e6a;
+    --paper: #fbf8f1;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(24,24,24,0.06) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  /* Top metadata strip — same as index */
+  .strip {
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--paper);
+  }
+  .strip .left { display: flex; gap: 24px; }
+  .strip .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent-go);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .strip a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .strip a:hover { border-bottom-color: var(--ink); }
+
+  /* Page header — echoes the hero pattern but compressed */
+  .page-head {
+    padding: 80px 32px 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+
+  .page-head h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(56px, 12vw, 140px);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    margin: 0;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .page-head .lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(18px, 2.6vw, 26px);
+    color: var(--ink);
+    margin: 28px auto 0;
+    max-width: 600px;
+    font-weight: 400;
+  }
+
+  .page-head .updated {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 32px;
+  }
+
+  /* The TL;DR card — feels like a sibling of the verdict box */
+  .tldr {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 32px 0;
+  }
+
+  .tldr-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 32px 36px;
+    position: relative;
+  }
+
+  .tldr-card::before {
+    content: "TL;DR";
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .tldr-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tldr-card li {
+    font-size: 17px;
+    line-height: 1.55;
+    padding: 12px 0 12px 28px;
+    border-bottom: 1px dashed rgba(24,24,24,0.15);
+    position: relative;
+  }
+  .tldr-card li:last-child { border-bottom: none; }
+  .tldr-card li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-go);
+    font-weight: 500;
+  }
+
+  /* Body content */
+  .content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 64px 32px;
+  }
+
+  .content h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(32px, 5vw, 52px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 20px;
+    margin-top: 64px;
+  }
+  .content h2:first-of-type { margin-top: 0; }
+
+  .content h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin-top: 36px;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .content p {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    color: var(--ink);
+  }
+
+  .content ul {
+    margin: 0 0 20px;
+    padding-left: 22px;
+  }
+
+  .content ul li {
+    font-size: 18px;
+    line-height: 1.65;
+    margin-bottom: 10px;
+  }
+
+  .content a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+    transition: background 0.15s, color 0.15s;
+    padding: 0 1px;
+  }
+  .content a:hover {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  /* Data flow table — the centerpiece */
+  .flow-wrap {
+    margin: 24px -8px;
+    overflow-x: auto;
+  }
+
+  .flow {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    min-width: 560px;
+  }
+
+  .flow thead th {
+    background: var(--ink);
+    color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-align: left;
+    padding: 14px 16px;
+  }
+
+  .flow tbody td {
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    background: var(--paper);
+  }
+
+  .flow tbody tr:last-child td { border-bottom: 1px solid var(--rule); }
+
+  .flow .service {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 17px;
+    white-space: nowrap;
+  }
+
+  .flow .what,
+  .flow .why {
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .flow .policy a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    word-break: break-word;
+  }
+
+  /* Pull-out aside — the "things we don't do" block */
+  .deny {
+    border-left: 3px solid var(--ink);
+    padding: 8px 0 8px 24px;
+    margin: 24px 0 28px;
+  }
+
+  .deny p {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  .deny ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .deny li {
+    padding-left: 20px;
+    position: relative;
+    font-size: 17px;
+  }
+
+  .deny li::before {
+    content: "✕";
+    position: absolute;
+    left: 0;
+    color: var(--accent-stay);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+
+  /* Inline mono styling for emails */
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92em;
+  }
+
+  /* Footer — same as index */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 32px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--paper);
+  }
+  footer a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .strip { padding: 12px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .strip .left { flex-wrap: wrap; gap: 12px; }
+    .page-head { padding: 56px 20px 32px; }
+    .tldr { padding: 40px 20px 0; }
+    .tldr-card { padding: 28px 22px; }
+    .content { padding: 48px 20px; }
+    .content p, .content ul li { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top metadata strip -->
+<div class="strip">
+  <div class="left">
+    <span><span class="dot"></span><a href="/">← Should I go outdoors?</a></span>
+    <span>Privacy</span>
+  </div>
+  <div>nine185</div>
+</div>
+
+<!-- Page header -->
+<header class="page-head">
+  <div class="eyebrow">The fine print, sized to actually read</div>
+  <h1>Privacy</h1>
+  <p class="lede">What data this site touches, who it goes to, and what we don't do with it. Plain English, no scroll-trap.</p>
+  <div class="updated">Last updated · 6 May 2026</div>
+</header>
+
+<!-- TL;DR card -->
+<section class="tldr">
+  <div class="tldr-card">
+    <ul>
+      <li>We don't run our own servers, accounts, or databases. There's nothing to log in to.</li>
+      <li>To answer "should I go outdoors?", your approximate location is sent to a small number of third-party APIs, listed below.</li>
+      <li>We don't sell your data, build a profile of you, or email you.</li>
+      <li>Once Google AdSense is live, ads on the page may use cookies. You'll see a consent banner where required, and you can refuse.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Body -->
+<article class="content">
+
+  <h2>Who we are</h2>
+  <p>shouldigooutdoors.com (the "site") is a single-page weather verdict tool, operated by Nine185. If you need to reach us about anything in this policy, write to <a href="mailto:info@nine185.com" class="mono">info@nine185.com</a>.</p>
+
+  <h2>What we handle</h2>
+  <p>The site touches two pieces of information about you, and only for as long as it takes to produce a verdict:</p>
+  <ul>
+    <li><strong>Your approximate location</strong> — either GPS coordinates from your browser (if you grant permission), or a city name you type in. Coordinates are rounded before being sent anywhere, so the precision is roughly neighbourhood-level, not address-level.</li>
+    <li><strong>Your IP address</strong> — visible to any service your browser contacts. We don't log it on infrastructure we control beyond what our hosting provider (Cloudflare) retains for routine network operations and abuse prevention.</li>
+  </ul>
+  <p>We don't ask for your name, email, account details, or payment information. There's no sign-up. There's no profile.</p>
+
+  <h2>Where your data goes</h2>
+  <p>Producing the verdict requires sending your location to outside services. Below is the complete list of third parties involved, what each one receives, and why.</p>
+
+  <div class="flow-wrap">
+    <table class="flow">
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>What it gets</th>
+          <th>Why</th>
+          <th>Their policy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="service">Open-Meteo</td>
+          <td class="what">Approximate latitude/longitude (rounded), and for some queries a city name.</td>
+          <td class="why">Returns the rain forecast and place-name lookup.</td>
+          <td class="policy"><a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener noreferrer nofollow">open-meteo.com/en/terms</a></td>
+        </tr>
+        <tr>
+          <td class="service">BigDataCloud</td>
+          <td class="what">Approximate latitude/longitude (rounded).</td>
+          <td class="why">Reverse geocoding — turning coordinates into a readable place name.</td>
+          <td class="policy"><a href="https://www.bigdatacloud.com/privacy-and-cookie-policy" target="_blank" rel="noopener noreferrer nofollow">bigdatacloud.com/privacy-and-cookie-policy</a></td>
+        </tr>
+        <tr>
+          <td class="service">ipapi.co</td>
+          <td class="what">Your IP address. Only contacted if your browser blocks geolocation and we fall back to IP-based lookup.</td>
+          <td class="why">Estimates an approximate city when no other location is available.</td>
+          <td class="policy"><a href="https://ipapi.co/privacy/" target="_blank" rel="noopener noreferrer nofollow">ipapi.co/privacy</a></td>
+        </tr>
+        <tr>
+          <td class="service">Google AdSense</td>
+          <td class="what">Cookies, device/browser information, IP address, and ad-interaction signals, per Google's policies.</td>
+          <td class="why">Serves advertising and measures performance. Active only once AdSense is live and, where consent is required, only after you accept.</td>
+          <td class="policy"><a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/ads</a></td>
+        </tr>
+        <tr>
+          <td class="service">Cloudflare</td>
+          <td class="what">Standard request metadata (IP, user agent, headers) needed to deliver the page.</td>
+          <td class="why">Hosting, content delivery, TLS, and abuse/bot mitigation.</td>
+          <td class="policy"><a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer nofollow">cloudflare.com/privacypolicy</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>We don't control how these third parties use the data they receive. Their own privacy policies, linked above, govern that.</p>
+
+  <h2>Geolocation</h2>
+  <p>The site asks your browser for an approximate location, which you can deny. If you refuse, the site will fall back to either an IP-based estimate or a manual city entry. You can revoke geolocation permission at any time through your browser's site-settings UI.</p>
+  <p>When coordinates are sent to a third-party service, they're rounded so precision is limited to roughly a city block — enough for an accurate forecast, not enough to identify a specific home.</p>
+
+  <h2>Cookies</h2>
+  <p>The site itself doesn't set tracking cookies. Any client-side storage is functional — for example, briefly remembering your last lookup so you don't have to grant location access again on reload.</p>
+  <p>Google AdSense, when active, may set cookies for ad delivery, frequency capping, and (where you've consented) personalisation. In the EEA, the UK, Switzerland, and other jurisdictions that require it, a Google-certified consent banner will appear before any ad cookies are set, and you can decline. Anywhere in the world, you can opt out of personalised advertising via <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer nofollow">Google Ads Settings</a>.</p>
+
+  <h2>What we don't do</h2>
+  <div class="deny">
+    <p>The shorter list, by design.</p>
+    <ul>
+      <li>Sell, rent, or share your location, IP, or anything else for marketing purposes.</li>
+      <li>Run cross-site analytics or fingerprinting scripts that profile you.</li>
+      <li>Maintain user accounts, mailing lists, or any way to contact you on our own initiative.</li>
+      <li>Store your location queries on infrastructure we control.</li>
+    </ul>
+  </div>
+
+  <h2>Your rights</h2>
+  <p>Depending on where you live, you may have legal rights over personal data — for example, the right to access, correct, delete, or restrict processing of data about you, the right to data portability, the right to withdraw consent, and the right to lodge a complaint with a data protection authority.</p>
+  <p>Because we don't maintain accounts or store your queries, in most cases there's nothing for us to retrieve or delete on our side. For data held by the third-party services listed above, you'll need to contact them directly using the policies linked in the table.</p>
+  <p>If you have a request that involves us specifically, write to <a href="mailto:info@nine185.com" class="mono">info@nine185.com</a> and we'll respond within a reasonable timeframe.</p>
+
+  <h2>Children</h2>
+  <p>The site is a general-audience utility and isn't directed at children. We don't knowingly collect personal information from children. If you believe a child has provided information through the site, please contact us and we'll take appropriate steps.</p>
+
+  <h2>International transfers</h2>
+  <p>The third-party services listed above may process data in countries other than the one you're visiting from, including the United States and the European Union. By using the site, you understand that your data may be transferred to and processed in those jurisdictions, subject to the safeguards described in those services' own policies.</p>
+
+  <h2>Security</h2>
+  <p>The site is served exclusively over HTTPS. We rely on Cloudflare for transport security, DDoS protection, and abuse mitigation. No transmission over the internet is ever 100% secure, but we apply industry-standard practices to keep your interactions with the site safe.</p>
+
+  <h2>Changes</h2>
+  <p>If we change how the site handles data — a new third-party service, a new ad format — we'll update this page and bump the "Last updated" date at the top. Material changes will also be reflected in the FAQ on the home page.</p>
+
+  <h2>Contact</h2>
+  <p>Questions, concerns, or privacy requests: <a href="mailto:info@nine185.com" class="mono">info@nine185.com</a>.</p>
+
+</article>
+
+<footer>
+  Operated by Nine185 · <a href="/">Home</a> · <a href="/terms">Terms</a> · <a href="mailto:info@nine185.com">Contact</a>
+</footer>
+
+</body>
+</html>
