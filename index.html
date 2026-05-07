@@ -376,6 +376,78 @@
     50% { opacity: 0.5; }
   }
 
+  /* Permission help — appears when geolocation is denied at the OS level.
+     Inline disclosure that matches the editorial tone: JetBrains Mono toggle,
+     dashed-rule separation, no boxed-callout drama. */
+  .perm-help {
+    margin-top: 24px;
+    max-width: 540px;
+    width: 100%;
+    text-align: left;
+    display: none;
+  }
+  .perm-help.show { display: block; }
+
+  .perm-help-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px dashed var(--ink-soft);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .perm-help-toggle:hover {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+  .perm-help-toggle::after {
+    content: " +";
+    font-weight: 400;
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  .perm-help.open .perm-help-toggle::after {
+    content: " ×";
+  }
+
+  .perm-help-body {
+    display: none;
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: var(--paper);
+    border-left: 2px solid var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .perm-help.open .perm-help-body { display: block; }
+
+  .perm-help-body ol {
+    margin: 8px 0 0 20px;
+    padding: 0;
+  }
+  .perm-help-body li {
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 6px;
+  }
+  .perm-help-body li:last-child { margin-bottom: 0; }
+  .perm-help-body code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    background: rgba(24,24,24,0.06);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+  .perm-help-body p { margin: 0 0 10px; }
+  .perm-help-body p:last-child { margin-bottom: 0; }
+
   /* Mobile tweaks */
   @media (max-width: 600px) {
     .strip { padding: 12px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
@@ -403,6 +475,13 @@
   <div class="question">Should you go outdoors?</div>
   <h1 class="verdict unknown" id="verdict">Ready</h1>
   <div class="verdict-detail" id="verdict-detail">Tap below to check the weather at your location, or enter a city.</div>
+
+  <!-- Shown only when geolocation is denied at the OS level. JS fills in the
+       platform-specific steps and toggles open/closed. -->
+  <div class="perm-help" id="perm-help" hidden>
+    <button class="perm-help-toggle" id="perm-help-toggle" aria-expanded="false" aria-controls="perm-help-body">Why?</button>
+    <div class="perm-help-body" id="perm-help-body" role="region" aria-label="How to enable location access"></div>
+  </div>
 
   <div class="stats" id="stats" style="visibility: hidden;">
     <div class="stat">
@@ -555,8 +634,10 @@ async function handleCitySubmit() {
   const query = $('city-input').value.trim().slice(0, 80);
   if (!query || query.length < 2) return;
 
-  // User chose a city — they don't need the geolocation CTA anymore.
+  // User chose a city — they don't need the geolocation CTA or any stale
+  // permission-help disclosure anymore.
   $('locate-btn').classList.add('hidden');
+  hidePermHelp();
   document.body.classList.add('loading');
   $('verdict').textContent = 'Checking…';
   $('verdict-detail').textContent = 'Looking up that place…';
@@ -578,34 +659,106 @@ async function handleCitySubmit() {
   }
 }
 
-// Try browser geolocation, fall back to IP-based
-function init() {
-  if (!navigator.geolocation) {
-    fallbackToIP();
-    return;
-  }
+// ============================================================
+// PERMISSION HELP — platform-aware guidance shown when the OS
+// silently denies geolocation (Settings -> Privacy -> ... = Never).
+// We can't read OS settings from JS, but we *can* tell the user
+// where to look on their specific platform.
+// ============================================================
 
-  setStatus('Locating', false);
-  navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      // Round to ~1km precision before sending to any third party.
-      // Open-Meteo's grid is 1-11km, so extra decimals just leak the user's exact home.
-      const lat = Math.round(pos.coords.latitude * 100) / 100;
-      const lon = Math.round(pos.coords.longitude * 100) / 100;
-      reverseGeocode(lat, lon);
-    },
-    (err) => {
-      // err.code: 1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT
-      if (err && err.code === 1) {
-        // User actively denied — don't fall through to IP, just ask them for a city.
-        showError("Location access was denied. Please allow this site to access your location or enter a city below instead.");
-      } else {
-        // Browser couldn't determine location, or it timed out — try IP as a fallback.
-        fallbackToIP();
-      }
-    },
-    { timeout: 8000, maximumAge: 600000 }
-  );
+function detectPlatform() {
+  const ua = navigator.userAgent || '';
+  // iPadOS 13+ reports as Mac; the touch-points check disambiguates.
+  const isiPadOS = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+  const isiOS = /iPhone|iPad|iPod/.test(ua) || isiPadOS;
+  if (isiOS) return 'ios';
+  if (/Android/.test(ua)) return 'android';
+  return 'desktop';
+}
+
+// Per-platform guidance. Kept short — the error message itself states the
+// problem, this just tells them where the toggle lives.
+const PERM_HELP = {
+  ios: `
+    <p>iOS has two separate location settings, and either one being off will silently block this site from prompting you. Check both:</p>
+    <ol>
+      <li><strong>Settings → Privacy &amp; Security → Location Services</strong> — make sure the top toggle is on, then scroll to <strong>Safari Websites</strong> and pick <code>Ask Next Time</code> or <code>While Using the App</code>.</li>
+      <li>Open this page in Safari, tap the <code>aA</code> icon in the address bar → <strong>Website Settings</strong> → set Location to <code>Ask</code> or <code>Allow</code>.</li>
+    </ol>
+    <p>Then come back and tap <em>Try location again</em>.</p>
+  `,
+  android: `
+    <p>Chrome and other Android browsers route location through two layers. Check both:</p>
+    <ol>
+      <li><strong>Android Settings → Apps → Chrome (or your browser) → Permissions → Location</strong> — set to <code>Allow only while using the app</code>.</li>
+      <li>In Chrome, tap the lock/info icon to the left of the address bar → <strong>Permissions</strong> → turn Location on. Or go to <strong>Chrome menu → Settings → Site settings → Location</strong>.</li>
+    </ol>
+    <p>Then come back and tap <em>Try location again</em>.</p>
+  `,
+  desktop: `
+    <p>Your browser is blocking location access for this site. To fix it:</p>
+    <ol>
+      <li>Click the lock or info icon to the left of the address bar.</li>
+      <li>Find the <strong>Location</strong> permission and set it to <code>Allow</code> or <code>Ask</code>.</li>
+      <li>Reload the page.</li>
+    </ol>
+    <p>Or just enter a city below — that path doesn't need any permissions.</p>
+  `
+};
+
+function showPermHelp() {
+  const wrap = $('perm-help');
+  const body = $('perm-help-body');
+  if (!wrap || !body) return;
+  body.innerHTML = PERM_HELP[detectPlatform()];
+  wrap.hidden = false;
+  wrap.classList.add('show');
+  // Default to closed — the toggle reveals the steps. Keeps the verdict
+  // area uncluttered for users who already know what's wrong.
+  wrap.classList.remove('open');
+  $('perm-help-toggle').setAttribute('aria-expanded', 'false');
+}
+
+function hidePermHelp() {
+  const wrap = $('perm-help');
+  if (!wrap) return;
+  wrap.classList.remove('show', 'open');
+  wrap.hidden = true;
+  $('perm-help-toggle').setAttribute('aria-expanded', 'false');
+}
+
+// Wire the toggle once at script load.
+$('perm-help-toggle').addEventListener('click', () => {
+  const wrap = $('perm-help');
+  const isOpen = wrap.classList.toggle('open');
+  $('perm-help-toggle').setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+});
+
+// ============================================================
+// CORE LOGIC (continued)
+// ============================================================
+
+
+function onGeoSuccess(pos) {
+  // Round to ~1km precision before sending to any third party.
+  // Open-Meteo's grid is 1-11km, so extra decimals just leak the user's exact home.
+  const lat = Math.round(pos.coords.latitude * 100) / 100;
+  const lon = Math.round(pos.coords.longitude * 100) / 100;
+  reverseGeocode(lat, lon);
+}
+
+function onGeoError(err) {
+  // err.code: 1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT
+  if (err && err.code === 1) {
+    // User actively denied — don't fall through to IP, just ask them for a city.
+    // The denial may be silent (no prompt was even shown) due to OS-level
+    // location settings, so surface platform-specific guidance via "Why?".
+    showError("Location access was denied — your device may be blocking it before the prompt even appears.");
+    showPermHelp();
+  } else {
+    // Browser couldn't determine location, or it timed out — try IP as a fallback.
+    fallbackToIP();
+  }
 }
 
 async function reverseGeocode(lat, lon) {
@@ -673,6 +826,9 @@ function renderVerdict(data) {
   document.body.classList.remove('loading');
   setStatus('Live', true);
   $('stats').style.visibility = 'visible';
+  // Any successful render means location was resolved, so hide any stale
+  // permission-help disclosure from a previous failed attempt.
+  hidePermHelp();
 
   // Look at the next hour: index 0 is the current hour bucket, index 1 is next
   // We average prob over the next 1-2 hour buckets to capture imminent rain
@@ -745,8 +901,8 @@ function showError(msg) {
 //
 // Chrome and Safari penalise sites that prompt for location on page load, and a
 // surprise prompt looks creepy to first-time visitors. So:
-//   - If the user has already granted location permission to this site, we fire
-//     init() immediately — no friction, no button click needed.
+//   - If the user has already granted location permission to this site, we
+//     start the lookup immediately — no friction, no button click needed.
 //   - Otherwise we wait for a click, which avoids the unsolicited prompt.
 //
 // The Permissions API isn't supported on iOS WebKit (Chrome, Safari, Firefox on
@@ -793,15 +949,38 @@ let lookupStarted = false;
 function startLookup() {
   if (lookupStarted) return;
   lookupStarted = true;
+
+  // CRITICAL for iOS Safari: getCurrentPosition() must be called synchronously
+  // inside the user-gesture handler, BEFORE any layout-affecting DOM writes.
+  // iOS WebKit's gesture-tracking is stricter than other browsers — class
+  // toggles and textContent assignments between the click and the geolocation
+  // call can sever the gesture chain in Private Browsing mode, causing the
+  // permission prompt to never appear. So fire the API first, render second.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      onGeoSuccess,
+      onGeoError,
+      { timeout: 8000, maximumAge: 600000 }
+    );
+  } else {
+    // No geolocation API at all — defer the IP fallback to a microtask so the
+    // UI updates below paint first.
+    Promise.resolve().then(fallbackToIP);
+  }
+
+  // Now safe to do UI work — the gesture has already been "spent" on the
+  // geolocation call above.
+  $('locate-btn').classList.add('hidden');
+  hidePermHelp();
+  document.body.classList.add('loading');
+  $('verdict').textContent = 'Checking…';
+  $('verdict-detail').textContent = 'Reading the sky over your block.';
+  setStatus('Locating', false);
+
   // Remember this user has used the site successfully so future visits skip
   // the CTA — important on iOS where the Permissions API can't tell us this.
   // Wrapped in try/catch because Safari throws on localStorage in private mode.
   try { localStorage.setItem('sigo_returning', '1'); } catch (e) {}
-  $('locate-btn').classList.add('hidden');
-  document.body.classList.add('loading');
-  $('verdict').textContent = 'Checking…';
-  $('verdict-detail').textContent = 'Reading the sky over your block.';
-  init();
 }
 
 boot();
