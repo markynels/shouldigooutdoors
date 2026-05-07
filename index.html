@@ -780,7 +780,7 @@ async function fallbackToIP() {
     const res = await fetch('https://ipapi.co/json/', { referrerPolicy: 'no-referrer' });
     if (!res.ok) {
       // ipapi.co returns 429 when rate-limited, or other non-2xx codes when blocked.
-      showError("Couldn't auto-detect your location. Enter a city above to continue.");
+      showError("Couldn't auto-detect your location. Enter a city below to continue.");
       return;
     }
     const data = await res.json();
@@ -791,11 +791,11 @@ async function fallbackToIP() {
       const label = [data.city, data.region_code, data.country_code].filter(Boolean).join(', ');
       fetchWeather(lat, lon, label);
     } else {
-      showError("Couldn't auto-detect your location. Enter a city above to continue.");
+      showError("Couldn't auto-detect your location. Enter a city below to continue.");
     }
   } catch (err) {
     // Network failure, blocked by tracking protection, etc.
-    showError("Couldn't auto-detect your location. Enter a city above to continue.");
+    showError("Couldn't auto-detect your location. Enter a city below to continue.");
   }
 }
 
