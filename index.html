@@ -34,6 +34,18 @@
 </script>
 
 <!-- ============================================================
+     GOOGLE FUNDING CHOICES (CMP) — required for EEA/UK/CH/CA traffic
+     Generate the snippet at fundingchoices.google.com using the same
+     Google account as your AdSense application, then paste it here.
+     Must load BEFORE the AdSense script below so consent is gathered
+     before any ad cookies are set.
+============================================================ -->
+<!--
+<script async src="https://fundingchoicesmessages.google.com/i/pub-XXXXXXXXXXXXXXXX?ers=1" nonce=""></script>
+<script nonce="">(function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();</script>
+-->
+
+<!-- ============================================================
      GOOGLE ADSENSE
      Uncomment and replace ca-pub-XXXXXXXXXXXXXXXX with your
      publisher ID after AdSense approves your site.
@@ -194,6 +206,18 @@
   }
   .location-btn:hover { background: var(--ink); color: var(--bg); }
 
+  .location-btn.primary {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 16px 32px;
+    font-size: 13px;
+  }
+  .location-btn.primary:hover { background: var(--accent-go); border-color: var(--accent-go); }
+  .location-btn.hidden { display: none; }
+
+  /* When geolocation hasn't been requested yet, push the secondary button closer */
+  #locate-btn + #manual-btn { margin-top: 16px; }
+
   .location-input {
     margin-top: 16px;
     display: none;
@@ -236,6 +260,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    contain: layout style;
   }
   .ad-slot .ad-label {
     font-family: 'JetBrains Mono', monospace;
@@ -358,15 +383,16 @@
     .hero { padding: 40px 20px; }
     .stats { gap: 24px; margin-top: 40px; }
     .content { padding: 60px 20px; }
+    .ad-slot { min-height: 280px; }
   }
 </style>
 </head>
-<body class="loading">
+<body>
 
 <!-- Top metadata strip -->
 <div class="strip">
   <div class="left">
-    <span><span class="dot" id="status-dot"></span><span id="status-text">Locating</span></span>
+    <span><span class="dot" id="status-dot"></span><span id="status-text">Ready</span></span>
     <span id="location-name">—</span>
   </div>
   <div><span id="time-now"></span></div>
@@ -375,8 +401,8 @@
 <!-- HERO: the verdict -->
 <main class="hero">
   <div class="question">Should you go outdoors?</div>
-  <h1 class="verdict unknown" id="verdict">Checking…</h1>
-  <div class="verdict-detail" id="verdict-detail">Reading the sky over your block.</div>
+  <h1 class="verdict unknown" id="verdict">Ready</h1>
+  <div class="verdict-detail" id="verdict-detail">Tap below to check the weather at your location, or enter a city.</div>
 
   <div class="stats" id="stats" style="visibility: hidden;">
     <div class="stat">
@@ -393,9 +419,11 @@
     </div>
   </div>
 
+  
+  <button class="location-btn primary" id="locate-btn">Check my location</button>
   <button class="location-btn" id="manual-btn">Use a different location</button>
   <div class="location-input" id="manual-input">
-    <input type="text" id="city-input" placeholder="Try: Paris, Tokyo, Brooklyn">
+    <input type="text" id="city-input" placeholder="Try: Paris, Tokyo, Brooklyn" maxlength="80" autocomplete="off" inputmode="text">
     <button id="city-submit">Check</button>
   </div>
 </main>
@@ -445,7 +473,7 @@
 
   <details class="faq-item">
     <summary class="faq-q">Why does it ask for my location?</summary>
-    <div class="faq-a">Because rain in Boston has nothing to do with rain in Brooklyn. The page asks your browser for an approximate location (you can deny it) and falls back to either an IP-based estimate or a city you type in. Your coordinates are rounded to roughly neighbourhood-level before being sent anywhere. To produce the verdict, your location goes to Open-Meteo (weather forecast), BigDataCloud (reverse geocoding to display a city name) and, only if your browser blocks geolocation, to ipapi.co (IP-based city estimate). We don't run our own servers or databases, so there's nothing we store, log, or sell on our side. Full details — including hosting via Cloudflare and ads via Google AdSense are in our <a href="/privacy">Privacy Policy</a>.</div>
+    <div class="faq-a">Because rain in Boston has nothing to do with rain in Brooklyn. The page asks your browser for an approximate location (you can deny it) and falls back to either an IP-based estimate or a city you type in. Your coordinates are rounded to roughly neighbourhood-level before being sent anywhere. To produce the verdict, your location goes to Open-Meteo (weather forecast), BigDataCloud (turning coordinates into a city name to display) and, only if your browser blocks geolocation, to ipapi.co (IP-based city estimate). We don't run our own servers or databases, so there's nothing we store, log, or sell on our side. Full details — including hosting via Cloudflare and ads via Google AdSense — are in our <a href="/privacy">Privacy Policy</a>.</div>
   </details>
 
   <details class="faq-item">
@@ -494,7 +522,7 @@
 </aside>
 
 <footer>
-  Weather data via <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> · Built to answer one question well · <a href="/privacy" rel="nofollow">Privacy</a> · <a href="/terms" rel="nofollow">Terms</a> · <span id="year"></span>
+  Weather data via <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer nofollow">Open-Meteo</a> · Built to answer one question well · <a href="/privacy" rel="nofollow">Privacy</a> · <a href="/terms" rel="nofollow">Terms</a> · <span id="year"></span>
 </footer>
 
 <script>
@@ -524,13 +552,19 @@ $('city-input').addEventListener('keydown', (e) => {
 });
 
 async function handleCitySubmit() {
-  const query = $('city-input').value.trim();
-  if (!query) return;
+  const query = $('city-input').value.trim().slice(0, 80);
+  if (!query || query.length < 2) return;
+
+  // User chose a city — they don't need the geolocation CTA anymore.
+  $('locate-btn').classList.add('hidden');
+  document.body.classList.add('loading');
+  $('verdict').textContent = 'Checking…';
+  $('verdict-detail').textContent = 'Looking up that place…';
 
   setStatus('Searching', false);
   try {
     // Open-Meteo's geocoding API — free, no key
-    const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=en&format=json`);
+    const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=en&format=json`, { referrerPolicy: 'no-referrer' });
     const data = await res.json();
     if (!data.results || data.results.length === 0) {
       showError("Couldn't find that place. Try a bigger nearby city?");
@@ -554,20 +588,31 @@ function init() {
   setStatus('Locating', false);
   navigator.geolocation.getCurrentPosition(
     (pos) => {
-      reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+      // Round to ~1km precision before sending to any third party.
+      // Open-Meteo's grid is 1-11km, so extra decimals just leak the user's exact home.
+      const lat = Math.round(pos.coords.latitude * 100) / 100;
+      const lon = Math.round(pos.coords.longitude * 100) / 100;
+      reverseGeocode(lat, lon);
     },
     (err) => {
-      // User denied or error — try IP
-      fallbackToIP();
+      // err.code: 1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT
+      if (err && err.code === 1) {
+        // User actively denied — don't fall through to IP, just ask them for a city.
+        showError("Location access was denied. Please allow this site to access your location or enter a city below instead.");
+      } else {
+        // Browser couldn't determine location, or it timed out — try IP as a fallback.
+        fallbackToIP();
+      }
     },
     { timeout: 8000, maximumAge: 600000 }
   );
 }
 
 async function reverseGeocode(lat, lon) {
-  // Use BigDataCloud's free reverse geocoder (no key required for client-side)
+  // Open-Meteo doesn't offer reverse geocoding (only forward), so we use BigDataCloud's
+  // free client-side endpoint. No API key required, no tracking cookies set.
   try {
-    const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+    const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat.toFixed(2)}&longitude=${lon.toFixed(2)}&localityLanguage=en`, { referrerPolicy: 'no-referrer' });
     const data = await res.json();
     const label = [data.city || data.locality, data.principalSubdivision, data.countryCode].filter(Boolean).join(', ') || 'Your location';
     fetchWeather(lat, lon, label);
@@ -579,16 +624,25 @@ async function reverseGeocode(lat, lon) {
 async function fallbackToIP() {
   setStatus('Locating', false);
   try {
-    const res = await fetch('https://ipapi.co/json/');
+    const res = await fetch('https://ipapi.co/json/', { referrerPolicy: 'no-referrer' });
+    if (!res.ok) {
+      // ipapi.co returns 429 when rate-limited, or other non-2xx codes when blocked.
+      showError("Couldn't auto-detect your location. Enter a city above to continue.");
+      return;
+    }
     const data = await res.json();
     if (data.latitude && data.longitude) {
+      // Round IP-derived coordinates too, for consistency.
+      const lat = Math.round(data.latitude * 100) / 100;
+      const lon = Math.round(data.longitude * 100) / 100;
       const label = [data.city, data.region_code, data.country_code].filter(Boolean).join(', ');
-      fetchWeather(data.latitude, data.longitude, label);
+      fetchWeather(lat, lon, label);
     } else {
-      showError("Couldn't find your location. Try entering a city above.");
+      showError("Couldn't auto-detect your location. Enter a city above to continue.");
     }
   } catch (err) {
-    showError("Couldn't find your location. Try entering a city above.");
+    // Network failure, blocked by tracking protection, etc.
+    showError("Couldn't auto-detect your location. Enter a city above to continue.");
   }
 }
 
@@ -606,7 +660,7 @@ async function fetchWeather(lat, lon, label) {
     `&forecast_hours=2&temperature_unit=celsius&timezone=auto`;
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { referrerPolicy: 'no-referrer' });
     if (!res.ok) throw new Error('weather fetch failed');
     const data = await res.json();
     renderVerdict(data);
@@ -678,10 +732,59 @@ function showError(msg) {
   $('verdict').textContent = 'Hmm.';
   $('verdict').className = 'verdict unknown';
   $('verdict-detail').textContent = msg;
+  // Open the manual input so the user has an obvious next step.
+  $('manual-input').classList.add('show');
+  // Bring the locate button back so the user can retry without refreshing —
+  // e.g. after unblocking location in their browser settings.
+  $('locate-btn').classList.remove('hidden');
+  $('locate-btn').textContent = 'Try location again';
+  lookupStarted = false;
 }
 
-// Boot
-init();
+// Boot — gesture-gated for first-time visitors, instant for returning ones.
+//
+// Chrome and Safari penalise sites that prompt for location on page load, and a
+// surprise prompt looks creepy to first-time visitors. So:
+//   - If the user has already granted location permission to this site, we fire
+//     init() immediately — no friction, no button click needed.
+//   - Otherwise we wait for a click, which avoids the unsolicited prompt.
+//
+// The Permissions API isn't supported in some older Safari versions; in that case
+// we fall back to gesture-gated.
+async function boot() {
+  setStatus('Ready', false);
+
+  // Wire up the button regardless — it's the fallback path. Persistent listener
+  // (no once:true) so users can retry after fixing a permission block.
+  $('locate-btn').addEventListener('click', startLookup);
+
+  // Check whether permission was already granted in a previous visit.
+  if (navigator.permissions && navigator.permissions.query) {
+    try {
+      const status = await navigator.permissions.query({ name: 'geolocation' });
+      if (status.state === 'granted') {
+        // Returning visitor with permission — go straight to the verdict.
+        startLookup();
+      }
+      // 'prompt' or 'denied': leave the button visible and wait for a click.
+    } catch (err) {
+      // Some browsers throw on unrecognised permission names. Stay gesture-gated.
+    }
+  }
+}
+
+let lookupStarted = false;
+function startLookup() {
+  if (lookupStarted) return;
+  lookupStarted = true;
+  $('locate-btn').classList.add('hidden');
+  document.body.classList.add('loading');
+  $('verdict').textContent = 'Checking…';
+  $('verdict-detail').textContent = 'Reading the sky over your block.';
+  init();
+}
+
+boot();
 </script>
 
 </body>
